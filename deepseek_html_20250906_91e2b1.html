@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stalcraft X Market - Торговая площадка</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a365d;
+            --secondary-color: #2a4a7f;
+            --accent-color: #e9b949;
+            --dark-color: #0f1a2d;
+            --light-color: #f4f4f4;
+            --success-color: #38a169;
+            --danger-color: #e53e3e;
+            --gradient-start: #0f1a2d;
+            --gradient-end: #1a365d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            color: #f4f4f4;
+            line-height: 1.6;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            min-height: 100vh;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: rgba(26, 54, 93, 0.9);
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+        
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+        
+        nav ul li a i {
+            margin-right: 5px;
+            color: var(--accent-color);
+        }
+        
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .auth-btn {
+            background: transparent;
+            color: white;
+            border: 1px solid var(--accent-color);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 1rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .auth-btn i {
+            margin-right: 5px;
+        }
+        
+        .auth-btn:hover {
+            background: var(--accent-color);
+            color: var(--dark-color);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: rgba(15, 26, 45, 0.8);
+            padding: 3rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--accent-color);
+        }
+        
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 1.5rem;
+            color: #ccc;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        /* Items Grid */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .item-card {
+            background: linear-gradient(145deg, rgba(26, 54, 93, 0.8), rgba(21, 38, 66, 0.8));
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: transform 0.3s;
+            border: 1px solid #2a4a7f;
+            backdrop-filter: blur(5px);
+        }
+        
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+        }
+        
+        .item-image {
+            height: 200px;
+            background-color: #0f1a2d;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .item-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--accent-color);
+            color: var(--dark-color);
+            padding: 0.3rem 0.7rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .item-date {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.7);
+            color: #ccc;
+            padding: 0.3rem 0.7rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        
+        .item-content {
+            padding: 1.5rem;
+        }
+        
+        .item-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+        
+        .item-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .item-details {
+            margin-bottom: 1rem;
+            color: #ccc;
+        }
+        
+        .item-details div {
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .item-details i {
+            margin-right: 8px;
+            color: var(--accent-color);
+        }
+        
+        .seller-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #2a4a7f;
+        }
+        
+        .seller-name {
+            font-size: 0.9rem;
+            color: #ccc;
+            display: flex;
+            align-items: center;
+        }
+        
+        .seller-name i {
+            margin-right: 5px;
+            color: var(--accent-color);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: linear-gradient(145deg, rgba(26, 54, 93, 0.8), rgba(21, 38, 66, 0.8));
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border: 1px solid #2a4a7f;
+            backdrop-filter: blur(5px);
+        }
+        
+        .sidebar h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #2a4a7f;
+        }
+        
+        .filter-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #ccc;
+        }
+        
+        .filter-group select, .filter-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #2a4a7f;
+            border-radius: 4px;
+            background: rgba(15, 26, 45, 0.7);
+            color: white;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            background: var(--accent-color);
+            color: var(--dark-color);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background: #d4a236;
+        }
+        
+        .btn-large {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Auth Modal */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .auth-content {
+            background: linear-gradient(145deg, rgba(26, 54, 93, 0.9), rgba(21, 38, 66, 0.9));
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+            border: 1px solid #2a4a7f;
+            backdrop-filter: blur(10px);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #ccc;
+        }
+        
+        .close-modal:hover {
+            color: white;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #2a4a7f;
+        }
+        
+        .auth-tab {
+            padding: 0.7rem 1.5rem;
+            cursor: pointer;
+            margin-right: 1rem;
+            color: #ccc;
+        }
+        
+        .auth-tab.active {
+            border-bottom: 3px solid var(--accent-color);
+            color: white;
+            font-weight: bold;
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .social-auth {
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+        
+        .social-auth p {
+            margin-bottom: 1rem;
+            color: #ccc;
+        }
+        
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-3px);
+        }
+        
+        .facebook {
+            background: #3b5998;
+        }
+        
+        .google {
+            background: #db4437;
+        }
+        
+        .vk {
+            background: #4a76a8;
+        }
+        
+        .discord {
+            background: #7289da;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #ccc;
+        }
+        
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #2a4a7f;
+            border-radius: 4px;
+            background: rgba(15, 26, 45, 0.7);
+            color: white;
+        }
+        
+        /* Footer */
+        footer {
+            background: rgba(15, 26, 45, 0.9);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            border-top: 2px solid var(--accent-color);
+            backdrop-filter: blur(5px);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-section h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .footer-section p {
+            color: #ccc;
+            line-height: 1.6;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.7rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-section ul li i {
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
+        
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #2a4a7f;
+            color: #ccc;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                order: -1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            nav ul li {
+                margin: 0.5rem;
+            }
+            
+            .user-menu {
+                margin-top: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .items-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Offer Modal */
+        .offer-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .offer-content {
+            background: linear-gradient(145deg, rgba(26, 54, 93, 0.9), rgba(21, 38, 66, 0.9));
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+            border: 1px solid #2a4a7f;
+            backdrop-filter: blur(10px);
+        }
+        
+        .offer-details {
+            margin: 1.5rem 0;
+        }
+        
+        .offer-details div {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .offer-details i {
+            margin-right: 10px;
+            color: var(--accent-color);
+            width: 20px;
+        }
+        
+        .guarantor-info {
+            background: rgba(15, 26, 45, 0.7);
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 3px solid var(--accent-color);
+        }
+        
+        .guarantor-info h4 {
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Support Chat */
+        .support-chat {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 99;
+            transition: transform 0.3s;
+        }
+        
+        .support-chat:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Create Offer Form */
+        .create-form {
+            background: linear-gradient(145deg, rgba(26, 54, 93, 0.8), rgba(21, 38, 66, 0.8));
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border: 1px solid #2a4a7f;
+            backdrop-filter: blur(5px);
+        }
+        
+        .form-title {
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #2a4a7f;
+        }
+        
+        .upload-preview {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .preview-item {
+            position: relative;
+            border-radius: 5px;
+            overflow: hidden;
+            height: 100px;
+        }
+        
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .preview-item .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">
+                    <div class="logo-text">STALCRAFT X MARKET</div>
+                </a>
+                <nav>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-home"></i>Главная</a></li>
+                        <li><a href="#"><i class="fas fa-shopping-cart"></i>Товары</a></li>
+                        <li><a href="#"><i class="fas fa-plus-circle"></i>Добавить лот</a></li>
+                        <li><a href="#"><i class="fas fa-shield-alt"></i>Безопасность</a></li>
+                    </ul>
+                </nav>
+                <div class="user-menu">
+                    <button class="auth-btn" id="loginBtn"><i class="fas fa-sign-in-alt"></i>Войти</button>
+                    <button class="auth-btn" id="registerBtn"><i class="fas fa-user-plus"></i>Регистрация</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Stalcraft X Market - Торговая площадка</h1>
+            <p>Безопасная площадка для покупки и продажи игровых предметов, артефактов и аккаунтов Stalcraft. Торгуйте с уверенностью!</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn btn-large"><i class="fas fa-shopping-cart"></i> Купить</a>
+                <a href="#" class="btn btn-large"><i class="fas fa-dollar-sign"></i> Продать</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="items-container">
+                <h2 style="margin-bottom: 1.5rem; color: var(--accent-color);"><i class="fas fa-gem"></i> Активные лоты</h2>
+                <div class="items-grid">
+                    <!-- Item 1 -->
+                    <div class="item-card">
+                        <div class="item-image" style="background-image: url('https://i.imgur.com/m7Vks0E.png');">
+                            <div class="item-badge">Артефакт</div>
+                            <div class="item-date">25.10.2023</div>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Кристалл "Кровь камня"</h3>
+                            <div class="item-price">1 450 ₽</div>
+                            <div class="item-details">
+                                <div><i class="fas fa-globe"></i> <strong>Регион:</strong> EU</div>
+                                <div><i class="fas fa-bolt"></i> <strong>Эффект:</strong> +15% защита от радиации</div>
+                                <div><i class="fas fa-star"></i> <strong>Редкость:</strong> Легендарный</div>
+                            </div>
+                            <div class="seller-info">
+                                <div class="seller-name"><i class="fas fa-user"></i> Stalker_25</div>
+                                <button class="btn offer-btn" data-id="1"><i class="fab fa-telegram"></i> Купить</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="item-card">
+                        <div class="item-image" style="background-image: url('https://i.imgur.com/9zJkPF7.png');">
+                            <div class="item-badge">Оружие</div>
+                            <div class="item-date">24.10.2023</div>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">АКС-74У "Модерн"</h3>
+                            <div class="item-price">3 200 ₽</div>
+                            <div class="item-details">
+                                <div><i class="fas fa-globe"></i> <strong>Регион:</strong> RU</div>
+                                <div><i class="fas fa-bolt"></i> <strong>Урон:</strong> 42-48</div>
+                                <div><i class="fas fa-star"></i> <strong>Редкость:</strong> Эпический</div>
+                            </div>
+                            <div class="seller-info">
+                                <div class="seller-name"><i class="fas fa-user"></i> Bandit_87</div>
+                                <button class="btn offer-btn" data-id="2"><i class="fab fa-telegram"></i> Купить</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="item-card">
+                        <div class="item-image" style="background-image: url('https://i.imgur.com/2Lp5DFk.png');">
+                            <div class="item-badge">Броня</div>
+                            <div class="item-date">24.10.2023</div>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Костюм "Север"</h3>
+                            <div class="item-price">5 700 ₽</div>
+                            <div class="item-details">
+                                <div><i class="fas fa-globe"></i> <strong>Регион:</strong> EU</div>
+                                <div><i class="fas fa-bolt"></i> <strong>Защита:</strong> 85</div>
+                                <div><i class="fas fa-star"></i> <strong>Редкость:</strong> Легендарный</div>
+                            </div>
+                            <div class="seller-info">
+                                <div class="seller-name"><i class="fas fa-user"></i> Freedom_Fighter</div>
+                                <button class="btn offer-btn" data-id="3"><i class="fab fa-telegram"></i> Купить</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="item-card">
+                        <div class="item-image" style="background-image: url('https://i.imgur.com/v6NQe2W.png');">
+                            <div class="item-badge">Аккаунт</div>
+                            <div class="item-date">23.10.2023</div>
+                        </div>
+                        <div class="item-content">
+                            <h3 class="item-title">Аккаунт 35 ур. (Сталкер)</h3>
+                            <div class="item-price">8 500 ₽</div>
+                            <div class="item-details">
+                                <div><i class="fas fa-globe"></i> <strong>Регион:</strong> RU</div>
+                                <div><i class="fas fa-bolt"></i> <strong>Уровень:</strong> 35</div>
+                                <div><i class="fas fa-envelope"></i> <strong>Смена почты:</strong> 2 недели назад</div>
+                            </div>
+                            <div class="seller-info">
+                                <div class="seller-name"><i class="fas fa-user"></i> Shadow_One</div>
+                                <button class="btn offer-btn" data-id="4"><i class="fab fa-telegram"></i> Купить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Create Offer Form -->
+                <div class="create-form">
+                    <h2 class="form-title"><i class="fas fa-plus-circle"></i> Создать новый лот</h2>
+                    <form id="createOfferForm">
+                        <div class="form-group">
+                            <label for="offerTitle">Название лота</label>
+                            <input type="text" id="offerTitle" required placeholder="Например: Аккаунт 35 ур. с артефактами">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="offerType">Тип лота</label>
+                            <select id="offerType" required>
+                                <option value="">Выберите тип</option>
+                                <option value="account">Аккаунт</option>
+                                <option value="weapon">Оружие</option>
+                                <option value="armor">Броня</option>
+                                <option value="artifact">Артефакт</option>
+                                <option value="resources">Ресурсы</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="offerRegion">Регион</label>
+                            <select id="offerRegion" required>
+                                <option value="">Выберите регион</option>
+                                <option value="eu">EU (Европа)</option>
+                                <option value="ru">RU (Россия)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="offerPrice">Цена (в рублях)</label>
+                            <input type="number" id="offerPrice" required placeholder="5000">
+                        </div>
+                        
+                        <div class="form-group" id="emailChangeGroup" style="display: none;">
+                            <label for="emailChangeDate">Когда последний раз менялась почта?</label>
+                            <input type="text" id="emailChangeDate" placeholder="Например: 2 недели назад">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="offerDescription">Описание</label>
+                            <textarea id="offerDescription" required placeholder="Подробно опишите ваш лот..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="sellerTelegram">Ваш Telegram для связи</label>
+                            <input type="text" id="sellerTelegram" required placeholder="@username">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="screenshotUpload">Скриншоты (максимум 3)</label>
+                            <input type="file" id="screenshotUpload" accept="image/*" multiple>
+                            <div class="upload-preview" id="uploadPreview"></div>
+                        </div>
+                        
+                        <button type="submit" class="btn" style="width: 100%;"><i class="fas fa-plus"></i> Разместить лот</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <h3><i class="fas fa-filter"></i> Фильтры</h3>
+                <div class="filter-group">
+                    <label for="category">Категория</label>
+                    <select id="category">
+                        <option value="">Все категории</option>
+                        <option value="artifact">Артефакты</option>
+                        <option value="weapon">Оружие</option>
+                        <option value="armor">Броня</option>
+                        <option value="account">Аккаунты</option>
+                        <option value="resources">Ресурсы</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="region">Регион</label>
+                    <select id="region">
+                        <option value="">Все регионы</option>
+                        <option value="eu">EU (Европа)</option>
+                        <option value="ru">RU (Россия)</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="price-range">Цена, руб.</label>
+                    <input type="range" id="price-range" min="0" max="10000" step="500">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>0</span>
+                        <span id="price-value">5000</span>
+                        <span>10000</span>
+                    </div>
+                </div>
+                <button class="btn" style="width: 100%;"><i class="fas fa-search"></i> Применить фильтры</button>
+
+                <h3 style="margin-top: 2rem;"><i class="fas fa-exclamation-circle"></i> Безопасная сделка</h3>
+                <p style="color: #ccc; font-size: 0.9rem; margin-top: 1rem;">Все сделки защищены системой гаранта. Переводите деньги только через гаранта биржи!</p>
+                
+                <h3 style="margin-top: 2rem;"><i class="fas fa-shield-alt"></i> Модерация</h3>
+                <p style="color: #ccc; font-size: 0.9rem; margin-top: 1rem;">Все лоты проходят проверку модератором перед публикацией. Дублирование лотов запрещено.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-content">
+            <span class="close-modal">&times;</span>
+            <div class="auth-tabs">
+                <div class="auth-tab active" data-tab="login">Вход</div>
+                <div class="auth-tab" data-tab="register">Регистрация</div>
+            </div>
+            
+            <form class="auth-form active" id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Пароль</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Войти</button>
+                
+                <div class="social-auth">
+                    <p>Или войдите с помощью</p>
+                    <div class="social-buttons">
+                        <div class="social-btn vk"><i class="fab fa-vk"></i></div>
+                        <div class="social-btn google"><i class="fab fa-google"></i></div>
+                        <div class="social-btn facebook"><i class="fab fa-facebook-f"></i></div>
+                    </div>
+                </div>
+            </form>
+            
+            <form class="auth-form" id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Имя пользователя</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Пароль</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerConfirmPassword">Подтверждение пароля</label>
+                    <input type="password" id="registerConfirmPassword" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Зарегистрироваться</button>
+                
+                <div class="social-auth">
+                    <p>Или зарегистрируйтесь с помощью</p>
+                    <div class="social-buttons">
+                        <div class="social-btn vk"><i class="fab fa-vk"></i></div>
+                        <div class="social-btn google"><i class="fab fa-google"></i></div>
+                        <div class="social-btn facebook"><i class="fab fa-facebook-f"></i></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Offer Modal -->
+    <div class="offer-modal" id="offerModal">
+        <div class="offer-content">
+            <span class="close-modal">&times;</span>
+            <h2 style="color: var(--accent-color); margin-bottom: 1.5rem;"><i class="fas fa-shopping-cart"></i> Покупка товара</h2>
+            
+            <div class="offer-details">
+                <div><i class="fas fa-tag"></i> <strong>Товар:</strong> <span id="modalItemTitle"></span></div>
+                <div
